@@ -10,7 +10,7 @@ export const stock = createAsyncThunk<
   OptionsDefault
 >('stock', async (_, thunkApi) => {
   try {
-    const response = await entryPoint.get('');
+    const response = await entryPoint.get(`/stable/stock/aapl/chart/20230101`);
     return response.data;
   } catch (error) {
     const message = getErrorMessage(error);
