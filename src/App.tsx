@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from './store/store.hooks';
+import { stock } from './model/stockHistory';
+import { StockHistoryPage } from './stockHistoryPage';
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  const stockData = useAppSelector((store) => store.stockData.stock);
+  const stockDataError = useAppSelector((store) => store.stockData.error);
+
+  useEffect(() => {
+    dispatch(stock());
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {stockDataError === undefined ? (
+        <div>
+          <StockHistoryPage stockData={stockData} />
+        </div>
+      ) : (
+        <>
+          <p>{stockDataError}</p>
+        </>
+      )}
     </div>
   );
 }
